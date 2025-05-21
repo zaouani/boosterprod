@@ -6,9 +6,59 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    
+    .main {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      color: #2c3e50;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+    }
+
+    .card ul {
+      padding-left: 1rem;
+    }
+
+    .icon {
+      font-size: 1.5rem;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+    .section-title {
+      text-align: left;
+      font-size: 1.8rem;
+      color: #34495e;
+      margin-bottom: 1.5rem;
+    }
+
+  </style>
 </head>
 <body class="bg-gray-100">
-
   <!-- HEADER AVEC MENU DÉROULANT AJOUTÉ -->
   <header class="bg-blue-800 text-white p-4 shadow-md">
     <div class="flex justify-between items-center max-w-7xl mx-auto">
@@ -18,6 +68,10 @@
       <div class="relative group">
         <button class="px-4 py-2 bg-blue-700 rounded-lg hover:bg-blue-600 transition">
           <i class="fas fa-bars mr-2"></i>Menu
+        </button>
+        <button class="px-4 py-2 bg-blue-700 rounded-lg hover:bg-blue-600 ">
+          <i class="fas fa-bars mr-2"></i><a href="index.html" style="color: white;
+            text-decoration: none;">deconnecter</a>
         </button>
         <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 hidden group-hover:block">
           <div class="py-1">
@@ -127,9 +181,45 @@
         </ul>
       </div>
     </div>
+  <div class="main">
+  <div class="section-title">Tableau de bord intelligent</div>
 
+  <div class="grid">
+    <div class="card">
+      <div class="ai-tag">IA Analyse</div>
+      <h3><span class="icon">📈</span>Consommation Totale (24h)</h3>
+      <canvas id="energyChart"></canvas>
+    </div>
+
+    <div class="card">
+      <div class="ai-tag">Données Machine</div>
+      <h3><span class="icon">⚙️</span>Consommation par Machine</h3>
+      <canvas id="machineChart"></canvas>
+    </div>
+
+    <div class="card">
+      <div class="ai-tag">Alerte système</div>
+      <h3><span class="icon">🚨</span>Alertes critiques</h3>
+      <ul>
+        <li>Machine Machine M-01 - Consommation élevée à 10h</li>
+        <li>Machine Machine M-03 - Température anormale</li>
+        <li>Machine Machine M-02 - Hors seuil toléré</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="ai-tag">Recommandations IA</div>
+      <h3><span class="icon">🤖</span>Suggestions d'optimisation</h3>
+      <ul>
+        <li>Réduire charge Machine Machine M-03 pendant les heures creuses</li>
+        <li>Programmer arrêt automatique à minuit</li>
+        <li>Réviser le moteur Machine Machine M-01 (prédiction panne)</li>
+      </ul>
+    </div>
+  </div>
+  </div>
   </main>
-
+  
   <script>
     // Vibration
     const vibrationData = [1.2, 1.8, 2.5, 3.2, 4.3];
@@ -190,7 +280,47 @@
       }
     });
   </script>
-
-</body>
-</html>
-
+  <script>
+    const energyChart = new Chart(document.getElementById('energyChart'), {
+      type: 'line',
+      data: {
+        labels: ['00h', '04h', '08h', '12h', '16h', '20h', '00h'],
+        datasets: [{
+          label: 'Consommation (kWh)',
+          data: [120, 150, 220, 180, 200, 160, 140],
+          borderColor: '#1a73e8',
+          backgroundColor: 'rgba(26, 115, 232, 0.1)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  
+    const machineChart = new Chart(document.getElementById('machineChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Machine M-01', 'Machine M-02', 'Machine M-03'],
+        datasets: [{
+          label: 'kWh',
+          data: [100, 85, 160, 60],
+          backgroundColor: ['#1abc9c', '#3498db', '#f39c12']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  </script>
+  </body>
+  </html>
+  
+  
