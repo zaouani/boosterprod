@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BOOSTERPROD - IA & Industrie 4.0</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Poppins', sans-serif;
+    color: #eee;
+    background: linear-gradient(270deg, #3a3d40, #181c23, #1e293b, #112233);
+    background-size: 800% 800%;
+    animation: gradientMove 20s ease infinite;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 30px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  header h1 {
+    font-size: 3.8rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+    color: #f4b41a; /* or gold-like for impact */
+    text-shadow: 0 0 10px #f4b41aaa;
+  }
+
+  header p {
+    font-size: 1.3rem;
+    color: #bbb;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(350px,1fr));
+    gap: 40px;
+  }
+
+  .feature-card {
+    background: rgba(255 255 255 / 0.08);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px #f4b41aaa;
+  }
+
+  .feature-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 8px #f4b41a);
+  }
+
+  .feature-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #f4b41a;
+    text-align: center;
+  }
+
+  .feature-desc {
+    font-size: 1rem;
+    color: #ccc;
+    text-align: center;
+  }
+
+  .btn-primary {
+    display: block;
+    width: 250px;
+    margin: 60px auto 0 auto;
+    background: #f4b41a;
+    color: #1a1a1a;
+    padding: 18px 0;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 30px #f4b41aaa;
+    transition: transform 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 50px #f4b41aee;
+  }
+
+  @media (max-width: 600px) {
+    header h1 {
+      font-size: 2.8rem;
+    }
+    .feature-img {
+      height: 180px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>BOOSTERPROD</h1>
+      <p>Intelligence Artificielle & Industrie 4.0 : Optimisez votre production industrielle grâce à nos solutions intelligentes, prédictives et automatisées.</p>
+    </header>
+
+    <section class="features">
+      <article class="feature-card">
+        <img class="feature-img" src="https://images.unsplash.com/photo-1573164574572-cb89e39749d5?auto=format&fit=crop&w=600&q=80" alt="Usine moderne avec robotique" />
+        <h2 class="feature-title">Automatisation Intelligente</h2>
+        <p class="feature-desc">
+          Intégrez des robots et capteurs connectés pour un contrôle précis et en temps réel de votre chaîne de production.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <img class="feature-img" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80" alt="Analyse de données industrielles" />
+        <h2 class="feature-title">Analyse Prédictive</h2>
+        <p class="feature-desc">
+          Utilisez l'IA pour anticiper les pannes et réduire les temps d'arrêt grâce à l'exploitation intelligente des données industrielles.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <img class="feature-img" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80" alt="Interface de contrôle AI" />
+        <h2 class="feature-title">Tableau de Bord AI</h2>
+        <p class="feature-desc">
+          Visualisez en temps réel vos indicateurs clés, recevez des alertes et prenez des décisions basées sur des insights intelligents.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <img class="feature-img" src="https://images.unsplash.com/photo-1518773553398-650c184e0bb3?auto=format&fit=crop&w=600&q=80" alt="Machine learning et data" />
+        <h2 class="feature-title">Optimisation Continue</h2>
+        <p class="feature-desc">
+          Améliorez constamment vos processus grâce à l'apprentissage automatique, pour une performance toujours plus élevée.
+        </p>
+      </article>
+    </section>
+
+    <button class="btn-primary" onclick="alert('Bienvenue chez BOOSTERPROD !')">Commencer maintenant</button>
+  </div>
+</body>
+</html>
