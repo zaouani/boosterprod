@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Maintenance Prédictive </title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f4f6f8;
+    }
+
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    main {
+      padding: 2rem;
+    }
+
+    section {
+      margin-bottom: 2rem;
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #003366;
+    }
+
+    label, select, input, button {
+      display: block;
+      margin: 0.5rem 0;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #sensorData p {
+      margin: 0.3rem 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #003366;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>BosterProd - Maintenance Prédictive</h1>
+  </header>
+
+  <main>
+    <!-- Section importation CSV -->
+    <section>
+      <h2>Importer l’historique des pannes</h2>
+      <input type="file" accept=".csv" id="csvFileInput" />
+      <button onclick="uploadCSV()">Charger le fichier</button>
+    </section>
+
+    <!-- Section sélection machine -->
+    <section>
+      <h2>Configuration Machine</h2>
+      <label for="factorySelector">Usine :</label>
+      <select id="factorySelector">
+        <option>Usine A</option>
+        <option>Usine B</option>
+      </select>
+
+      <label for="machineSelector">Machine :</label>
+      <select id="machineSelector">
+        <option>Machine 1</option>
+        <option>Machine 2</option>
+      </select>
+    </section>
+
+    <!-- Section modèle -->
+    <section>
+      <h2>Modèle de prédiction</h2>
+      <button onclick="trainModel()">Entraîner le modèle</button>
+      <button onclick="predictFailure()">Lancer la prédiction</button>
+      <div id="predictionStatus">Aucune prédiction lancée.</div>
+    </section>
+
+    <!-- Section capteurs en temps réel -->
+    <section>
+      <h2>Données capteurs en temps réel</h2>
+      <div id="sensorData">
+        <p>Température : <span id="temp">-</span> °C</p>
+        <p>Pression : <span id="pressure">-</span> Pa</p>
+        <p>Vibration : <span id="vibration">-</span> Hz</p>
+      </div>
+    </section>
+
+    <!-- Résultats de prédiction -->
+    <section>
+      <h2>Résultat de la prédiction</h2>
+      <canvas id="predictionChart" width="400" height="200"></canvas>
+      <button onclick="exportResults()">Exporter les résultats</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 SmartFactory360. Tous droits réservés.</p>
+  </footer>
+
+  <!-- Script JS simplifié -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    function uploadCSV() {
+      alert("Fichier CSV chargé (simulation)");
+    }
+
+    function trainModel() {
+      document.getElementById('predictionStatus').textContent = "Entraînement du modèle en cours...";
+      setTimeout(() => {
+        document.getElementById('predictionStatus').textContent = "Modèle entraîné avec succès.";
+      }, 2000);
+    }
+
+    function predictFailure() {
+      document.getElementById('predictionStatus').textContent = "Prédiction en cours...";
+      setTimeout(() => {
+        document.getElementById('predictionStatus').textContent = "⚠️ Risque de panne élevé détecté !";
+        showChart();
+      }, 2000);
+    }
+
+    function showChart() {
+      const ctx = document.getElementById('predictionChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['T1', 'T2', 'T3', 'T4'],
+          datasets: [{
+            label: 'Probabilité de panne',
+            data: [0.1, 0.2, 0.4, 0.85],
+            borderColor: 'red',
+            fill: false
+          }]
+        },
+        options: {
+          scales: {
+            y: { beginAtZero: true, max: 1 }
+          }
+        }
+      });
+    }
+
+    function exportResults() {
+      alert("Résultats exportés (simulation)");
+    }
+
+    // Simulation capteurs
+    setInterval(() => {
+      document.getElementById('temp').textContent = (60 + Math.random() * 10).toFixed(1);
+      document.getElementById('pressure').textContent = (101325 + Math.random() * 500).toFixed(0);
+      document.getElementById('vibration').textContent = (50 + Math.random() * 5).toFixed(1);
+    }, 2000);
+  </script>
+</body>
+</html>

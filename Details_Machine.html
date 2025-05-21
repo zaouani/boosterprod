@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Configuration Machines</title>
+    <style>
+        .config-container { padding: 20px; }
+        .machine-form { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .btn { background: #3498db; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; }
+        .machine-list { margin-top: 20px; }
+        .machine-card { background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    
+    <div class="config-container">
+        <h1>Configuration des Machines</h1>
+        
+        <!-- Formulaire d'ajout -->
+        <div class="machine-form">
+            <h2>Ajouter une Machine</h2>
+            <div class="form-group">
+                <label>ID Machine</label>
+                <input type="text" id="machine-id" placeholder="Ex: M-001">
+            </div>
+            <div class="form-group">
+                <label>Nom</label>
+                <input type="text" id="machine-name" placeholder="Ex: Presse Hydraulique">
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select id="machine-type">
+                    <option value="cnc">CNC</option>
+                    <option value="robot">Robot</option>
+                    <option value="convoyeur">Convoyeur</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Protocole de Communication</label>
+                <select id="machine-protocol">
+                    <option value="modbus">Modbus TCP</option>
+                    <option value="opcua">OPC UA</option>
+                    <option value="mqtt">MQTT</option>
+                </select>
+            </div>
+            <button class="btn" onclick="addMachine()">Enregistrer</button>
+        </div>
+
+        <!-- Liste des machines configurées -->
+        <div class="machine-list">
+            <h2>Machines Connectées</h2>
+            <div id="machines-container">
+                <!-- Rempli dynamiquement par JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Exemple de données simulées
+        let machines = [
+            { id: "M-001", name: "Presse Hydraulique", type: "cnc", protocol: "modbus", connected: true }
+        ];
+
+        // Afficher les machines
+        function renderMachines() {
+            const container = document.getElementById('machines-container');
+            container.innerHTML = machines.map(machine => `
+                <div class="machine-card">
+                    <h3>${machine.id} - ${machine.name}</h3>
+                    <p>Type: ${machine.type.toUpperCase()} | Protocole: ${machine.protocol.toUpperCase()}</p>
+                    <p>Statut: <span style="color: ${machine.connected ? 'green' : 'red'}">
+                        ${machine.connected ? 'Connecté' : 'Déconnecté'}
+                    </span></p>
+                    <button onclick="testConnection('${machine.id}')">Tester la connexion</button>
+                </div>
+            `).join('');
+        }
+
+        // Ajouter une machine
+        function addMachine() {
+            const id = document.getElementById('machine-id').value;
+            const name = document.getElementById('machine-name').value;
+            const type = document.getElementById('machine-type').value;
+            const protocol = document.getElementById('machine-protocol').value;
+
+            machines.push({ id, name, type, protocol, connected: false });
+            renderMachines();
+            alert(`Machine ${id} ajoutée!`);
+        }
+
+        // Tester la connexion (simulé)
+        function testConnection(machineId) {
+            const machine = machines.find(m => m.id === machineId);
+            machine.connected = !machine.connected; // Bascule pour l'exemple
+            renderMachines();
+        }
+
+        // Initialisation
+        renderMachines();
+    </script>
+</body>
+</html>

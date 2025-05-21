@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>BosterProd - Contrôle Qualité</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #0077b6;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-section {
+            margin-top: 30px;
+        }
+
+        .form-section input, select, textarea {
+            width: 100%;
+            margin-top: 8px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .form-section button {
+            margin-top: 10px;
+            background-color: #0077b6;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .form-section button:hover {
+            background-color: #005f87;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1> Tableau de bord - Contrôle Qualité</h1>
+    </header>
+
+    <div class="dashboard">
+        <!-- Camembert qualité -->
+        <div class="card">
+            <h2>Taux de conformité</h2>
+            <canvas id="qualityChart"></canvas>
+        </div>
+
+        <!-- Résumé des inspections -->
+        <div class="card">
+            <h2>Derniers lots inspectés</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Lot</th>
+                        <th>Produit</th>
+                        <th>Conforme</th>
+                        <th>Non conforme</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Lot-00124</td>
+                        <td>Capteur A1</td>
+                        <td>95</td>
+                        <td>5</td>
+                        <td><span style="color:green;">✅ OK</span></td>
+                    </tr>
+                    <tr>
+                        <td>Lot-00125</td>
+                        <td>Valve B2</td>
+                        <td>80</td>
+                        <td>20</td>
+                        <td><span style="color:red;">⚠️ Défaut</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Détection Anomalie -->
+    <div class="card" style="margin-top: 30px;">
+        <h2>🔍 Anomalies détectées par IA</h2>
+        <ul>
+            <li>Défaut récurrent sur ligne 3 : déformation détectée (12%).</li>
+            <li>Température > 85°C corrélée avec non-conformité sur 2 lots.</li>
+        </ul>
+    </div>
+
+    <!-- Formulaire de défauts -->
+    <div class="card form-section">
+        <h2>📋 Déclaration de défaut manuel</h2>
+        <form>
+            <label>Lot :</label>
+            <input type="text" placeholder="Ex: Lot-00126">
+            
+            <label>Type de défaut :</label>
+            <select>
+                <option>Défaut visuel</option>
+                <option>Défaut dimensionnel</option>
+                <option>Erreur d’étiquetage</option>
+                <option>Non détecté</option>
+            </select>
+
+            <label>Gravité :</label>
+            <select>
+                <option>Mineure</option>
+                <option>Majeure</option>
+                <option>Critique</option>
+            </select>
+
+            <label>Description :</label>
+            <textarea rows="4" placeholder="Décrire brièvement le défaut observé..."></textarea>
+
+            <button type="submit">Enregistrer le défaut</button>
+        </form>
+    </div>
+
+    <!-- Upload rapport -->
+    <div class="card form-section">
+        <h2>📤 Téléverser un rapport qualité</h2>
+        <input type="file" accept=".csv,.pdf">
+        <button type="submit">Envoyer</button>
+    </div>
+
+    <!-- Chart Script -->
+    <script>
+        const ctx = document.getElementById('qualityChart').getContext('2d');
+        const qualityChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Conforme', 'Non conforme'],
+                datasets: [{
+                    label: 'Qualité',
+                    data: [90, 10], // Exemple
+                    backgroundColor: ['#2a9d8f', '#e76f51'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
+</body>
+</html>

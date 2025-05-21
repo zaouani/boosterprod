@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alertes & Interventions </title>
+    <style>
+        
+        :root {
+            --critical: #e74c3c;
+            --warning: #f39c12;
+            --normal: #2ecc71;
+            --info: #3498db;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+        }
+        .sidebar a {
+                        color: white; /* Force la couleur du texte en blanc */
+                        text-decoration: none; /* Supprime le soulignement par défaut */
+                    }
+
+        .sidebar a:hover {
+                        color: #f0f0f0; /* Légère variation au survol (optionnel) */
+                        text-decoration: underline; /* Ajoute un soulignement au survol (optionnel) */
+                    }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .menu-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .menu-item:hover {
+            background: #34495e;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .filter-btn.active {
+            background: var(--dark);
+            color: white;
+        }
+        
+        .alert-cards {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .alert-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px;
+            border-left: 5px solid var(--warning);
+            position: relative;
+        }
+        
+        .alert-card.critical {
+            border-left-color: var(--critical);
+        }
+        
+        .alert-card.warning {
+            border-left-color: var(--warning);
+        }
+        
+        .alert-card.info {
+            border-left-color: var(--info);
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .alert-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .alert-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .assign-btn {
+            background: var(--info);
+            color: white;
+        }
+        
+        .resolve-btn {
+            background: var(--normal);
+            color: white;
+        }
+        
+        .priority {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            background: var(--warning);
+            color: white;
+        }
+        
+        .critical .priority {
+            background: var(--critical);
+        }
+        
+        .info .priority {
+            background: var(--info);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        .modal-title {
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .add-alert-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--info);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">BosterProd</div>
+            <div class="menu-item active"><a href="Dashboard.html">Dashboard</a></div>
+            <div class="menu-item"><a href="GestionUsine/add_machines.html">Machines</a></div>
+            <div class="menu-item"><a href="Controle_Qualite.html">Qualité</a></div>
+            <div class="menu-item active"><a href="Maintenance_Predictive.html">Maintenance</a></div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Alertes & Interventions</h1>
+                <div id="current-time">00:00:00</div>
+            </div>
+            
+            <div class="filters">
+                <button class="filter-btn active">Toutes</button>
+                <button class="filter-btn">Critiques</button>
+                <button class="filter-btn">Avertissements</button>
+                <button class="filter-btn">Non résolues</button>
+            </div>
+            
+            <div class="alert-cards" id="alert-container">
+                <!-- Alerts will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Alert Button -->
+    <button class="add-alert-btn" id="add-alert-btn">+</button>
+    
+    <!-- Add Alert Modal -->
+    <div class="modal" id="alert-modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Nouvelle Alerte</h3>
+            <form id="alert-form">
+                <div class="form-group">
+                    <label for="alert-title">Titre</label>
+                    <input type="text" id="alert-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="alert-machine">Machine concernée</label>
+                    <select id="alert-machine" required>
+                        <option value="">Sélectionner une machine</option>
+                        <option value="M-01">Presse Hydraulique (M-01)</option>
+                        <option value="M-02">Convoyeur Principal (M-02)</option>
+                        <option value="M-03">Robot Soudure (M-03)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="alert-type">Type d'alerte</label>
+                    <select id="alert-type" required>
+                        <option value="critical">Critique</option>
+                        <option value="warning">Avertissement</option>
+                        <option value="info">Information</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="alert-description">Description</label>
+                    <textarea id="alert-description" rows="3" required></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="cancel-btn">Annuler</button>
+                    <button type="submit" class="assign-btn">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        let alerts = [
+            {
+                id: 1,
+                title: "Vibration anormale",
+                machine: "M-01",
+                type: "critical",
+                description: "La presse hydraulique présente des vibrations supérieures à 7mm/s",
+                timestamp: "2023-05-15T09:30:00",
+                resolved: false,
+                assignedTo: ""
+            },
+            {
+                id: 2,
+                title: "Température élevée",
+                machine: "M-03",
+                type: "warning",
+                description: "Le robot de soudure atteint 85°C",
+                timestamp: "2023-05-15T10:15:00",
+                resolved: false,
+                assignedTo: ""
+            },
+            {
+                id: 3,
+                title: "Maintenance préventive",
+                machine: "M-02",
+                type: "info",
+                description: "Maintenance programmée pour le convoyeur principal",
+                timestamp: "2023-05-14T14:00:00",
+                resolved: true,
+                assignedTo: "Jean D."
+            }
+        ];
+        
+        // Load alerts from localStorage if available
+        if (localStorage.getItem('alerts')) {
+            alerts = JSON.parse(localStorage.getItem('alerts'));
+        }
+        
+        // DOM Elements
+        const alertContainer = document.getElementById('alert-container');
+        const addAlertBtn = document.getElementById('add-alert-btn');
+        const alertModal = document.getElementById('alert-modal');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const alertForm = document.getElementById('alert-form');
+        
+        // Display current time
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('current-time').textContent = now.toLocaleTimeString();
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+        
+        // Render alerts
+        function renderAlerts(filter = 'all') {
+            alertContainer.innerHTML = '';
+            
+            let filteredAlerts = alerts;
+            
+            if (filter === 'critical') {
+                filteredAlerts = alerts.filter(alert => alert.type === 'critical');
+            } else if (filter === 'warning') {
+                filteredAlerts = alerts.filter(alert => alert.type === 'warning');
+            } else if (filter === 'unresolved') {
+                filteredAlerts = alerts.filter(alert => !alert.resolved);
+            }
+            
+            filteredAlerts.forEach(alert => {
+                const alertDate = new Date(alert.timestamp);
+                const alertCard = document.createElement('div');
+                alertCard.className = `alert-card ${alert.type}`;
+                
+                alertCard.innerHTML = `
+                    <div class="alert-title">
+                        ${alert.title}
+                        <span class="priority">${alert.type === 'critical' ? 'Critique' : 
+                                          alert.type === 'warning' ? 'Avertissement' : 'Information'}</span>
+                    </div>
+                    <div class="alert-meta">
+                        <span>Machine: ${alert.machine}</span>
+                        <span>${alertDate.toLocaleString()}</span>
+                    </div>
+                    <p>${alert.description}</p>
+                    <div class="alert-actions">
+                        ${!alert.resolved ? `
+                            <button class="action-btn assign-btn" data-id="${alert.id}">
+                                ${alert.assignedTo ? 'Réassigner' : 'Assigner'}
+                            </button>
+                            <button class="action-btn resolve-btn" data-id="${alert.id}">Résoudre</button>
+                        ` : `
+                            <span>Résolu par: ${alert.assignedTo}</span>
+                        `}
+                    </div>
+                `;
+                
+                alertContainer.appendChild(alertCard);
+            });
+            
+            // Add event listeners to buttons
+            document.querySelectorAll('.assign-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const alertId = parseInt(this.getAttribute('data-id'));
+                    assignAlert(alertId);
+                });
+            });
+            
+            document.querySelectorAll('.resolve-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const alertId = parseInt(this.getAttribute('data-id'));
+                    resolveAlert(alertId);
+                });
+            });
+        }
+        
+        // Assign alert
+        function assignAlert(alertId) {
+            const technician = prompt("Nom du technicien assigné:");
+            if (technician) {
+                const alertIndex = alerts.findIndex(a => a.id === alertId);
+                if (alertIndex !== -1) {
+                    alerts[alertIndex].assignedTo = technician;
+                    saveAlerts();
+                    renderAlerts();
+                }
+            }
+        }
+        
+        // Resolve alert
+        function resolveAlert(alertId) {
+            const alertIndex = alerts.findIndex(a => a.id === alertId);
+            if (alertIndex !== -1) {
+                alerts[alertIndex].resolved = true;
+                saveAlerts();
+                renderAlerts();
+            }
+        }
+        
+        // Save alerts to localStorage
+        function saveAlerts() {
+            localStorage.setItem('alerts', JSON.stringify(alerts));
+        }
+        
+        // Add new alert
+        function addAlert(title, machine, type, description) {
+            const newAlert = {
+                id: alerts.length > 0 ? Math.max(...alerts.map(a => a.id)) + 1 : 1,
+                title,
+                machine,
+                type,
+                description,
+                timestamp: new Date().toISOString(),
+                resolved: false,
+                assignedTo: ""
+            };
+            
+            alerts.unshift(newAlert);
+            saveAlerts();
+            renderAlerts();
+        }
+        
+        // Event listeners
+        addAlertBtn.addEventListener('click', () => {
+            alertModal.style.display = 'flex';
+        });
+        
+        cancelBtn.addEventListener('click', () => {
+            alertModal.style.display = 'none';
+            alertForm.reset();
+        });
+        
+        alertForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('alert-title').value;
+            const machine = document.getElementById('alert-machine').value;
+            const type = document.getElementById('alert-type').value;
+            const description = document.getElementById('alert-description').value;
+            
+            addAlert(title, machine, type, description);
+            
+            alertModal.style.display = 'none';
+            alertForm.reset();
+        });
+        
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.textContent.toLowerCase();
+                let filterKey = 'all';
+                
+                if (filter.includes('critique')) filterKey = 'critical';
+                else if (filter.includes('avertissement')) filterKey = 'warning';
+                else if (filter.includes('non résolue')) filterKey = 'unresolved';
+                
+                renderAlerts(filterKey);
+            });
+        });
+        
+        // Initialize
+        renderAlerts();
+    </script>
+</body>
+</html>
