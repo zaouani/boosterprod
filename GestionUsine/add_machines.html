@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Configuration Machines</title>
     <style>
+         a {
+            color: white;
+        }
         .config-container { padding: 20px; }
         .machine-form { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .form-group { margin-bottom: 15px; }
@@ -46,7 +49,8 @@
                     <option value="mqtt">MQTT</option>
                 </select>
             </div>
-            <button class="btn" onclick="addMachine()">Enregistrer</button>
+            <button class="btn" onclick="addMachine()">Ajouter machine</button>
+            <button class="btn" ><a href="../Dashboard.html">Enregistrer</a></button>
         </div>
 
         <!-- Liste des machines configurées -->
